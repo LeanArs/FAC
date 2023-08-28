@@ -1,0 +1,62 @@
+# t0 = inteiro
+# t1 = valor
+# t2 = divisores
+# t3 = resto da divisao
+
+.data
+	linedown: .asciz "\n"
+	sim: .asciz "sim"
+	nao: .asciz "nao"
+	invalido: .asciz "Entrada invalida."
+
+.text
+main:
+	li a7, 5 #lê um int
+	ecall  #chamada de sistema
+	mv t0, a0 #move o valor a0 para t0
+	
+	blez t0, valorInvalido
+	
+	li t1, 1 #valor | t1 = 1
+	li t2, 0 #divisores | t2 = 0
+	li t4, 2 #2
+
+loop:
+	rem t3, t0, t1 # t3 = resto da divisão de t0 por t1
+	beqz t3, true # se t3 = 0, branch true
+	addi t1, t1, 1
+	j test
+	
+	true:
+	addi t2, t2, 1 # t2 = t2 + 1
+	addi t1, t1, 1 # t1 = t1 + 1
+	
+	test:
+	ble t1, t0, loop # se t1 < t0, loop
+	
+	beq t2, t4, primo
+	j naoPrimo
+
+valorInvalido:
+li a7, 4 #imprime uma string
+la a0, invalido #imprime "Entrada invalida."
+ecall #chamada de sistema
+j exit
+
+naoPrimo:
+li a7, 4 #imprime uma string
+la a0, nao #imprime "nao"
+ecall #chamada de sistema
+j exit
+
+primo:
+li a7, 4 #imprime uma string
+la a0, sim #imprime "sim"
+ecall #chamada de sistema
+j exit
+
+#fim do programa
+exit:
+li a7, 4 #imprime uma string
+la a0, linedown #imprime "\n"
+ecall #chamada de sistema

@@ -1,0 +1,53 @@
+.data
+linedown: .string "\n"
+palavra: .space 256
+
+.text
+li a7, 5 #lê um inteiro
+ecall #chamada de sistema
+mv s0, a0 #move o valor de a0 para s0 | quantidade de caracteres
+mv s3, a0
+addi s3, s3, -1
+
+#Armazenando string
+addi s0,s0,2
+
+la a0, palavra
+mv a1, s0
+li a7, 8 #lê uma string
+ecall #chamada de sistema
+
+addi s0,s0,-2
+
+mv s1, a0
+mv s2, a0
+
+add s2, s2, s3
+
+while:
+	bge t1, s0, done # se contador < s0 entao: 
+	lb s3, (s1) #caracter da palavra
+ 	lb s4, (s2) #caracter da palavra
+ 	bne s3,s4 notpalindrome #se s3 != s4 entao:
+  	
+  	addi s1,s1,1 #avanca para proximo caracter
+	addi s2,s2,-1 #avanca para proximo caracte
+ 
+	addi t1,t1,1 #contador + 1
+	j while
+  
+notpalindrome:
+	addi s7, s7, 0
+	j exit
+	
+done:
+	addi s7, s7, 1
+	
+exit:
+	mv a0, s7
+	li a7, 1 #printa um inteiro
+	ecall #chamada de sistema
+
+	la a0, linedown #quebra de linha
+	li a7, 4 #printa uma string
+	ecall #chamada de sistema

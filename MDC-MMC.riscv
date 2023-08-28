@@ -1,0 +1,72 @@
+# a1 = int1
+# a2 = int2
+# a3 = aux
+# t0 = 1
+# t1 = resto
+
+.data
+	linedown: .asciz "\n"
+	invalido: .asciz "Entrada invalida."
+
+.text
+main:
+	li t0, 1 # t0 = 1
+	
+	li a7, 5 #lê um int
+	ecall  #chamada de sistema
+	mv a1, a0 #move o valor a0 para a1
+	
+	ble a1, t0, valorInvalido # testa se o int inserido é > 1
+	
+	li a7, 5 #lê um int
+	ecall  #chamada de sistema
+	mv a2, a0 #move o valor a0 para a1
+	
+	ble a2, t0, valorInvalido  # testa se o int inserido é > 1
+	
+	#MMC parte 1
+	mul a4, a1, a2
+	
+	#Ordena a1 e a2 de forma crescente
+	bge a2, a1, loop
+	mv a3, a1 #aux = a1
+	mv a1, a2 #a1 = a2
+	mv a2, a3 #a2 = aux = a1
+	
+	#MDC (teorema de euclides)
+	loop:
+		rem t1, a2, a1 #salva o resto da divisão de a2/a1 em t1
+		beqz t1, resultado #se t1 = 0, resultado
+		mv a2, a1 #salva o valor de a1 em a2
+		mv a1, t1 #salva o valor do resto em a1
+		j loop
+	
+valorInvalido:
+	li a7, 4 #imprime uma string
+	la a0, invalido #imprime "Entrada invalida."
+	ecall #chamada de sistema
+	j exit
+
+resultado:
+	#MMC parte 2
+	div a4, a4, a1
+
+	#resultado MDC
+	li, a7, 1 #imprime um inteiro
+	mv a0, a1 #imprime a1 na tela
+	ecall #chamada de sistema
+	
+	li a7, 4 #imprime uma string
+	la a0, linedown #imprime "\n"
+	ecall #chamada de sistema
+	
+	#resultado MMC
+	li, a7, 1 #imprime um inteiro
+	mv a0, a4 #imprime a4 na tela
+	ecall #chamada de sistema
+
+#fim do programa
+exit:
+	li a7, 4 #imprime uma string
+	la a0, linedown #imprime "\n"
+	ecall #chamada de sistema

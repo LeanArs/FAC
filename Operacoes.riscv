@@ -1,0 +1,169 @@
+.data
+	soma: .asciz "ADD: "
+	sub: .asciz "SUB: "
+	and: .asciz "AND: "
+	or: .asciz "OR: "
+	xor: .asciz "XOR: "
+	mask: .asciz "MASK: "
+	dslli: .asciz "SLL("
+	dsrli: .asciz "SRL("
+	linedown: .asciz "\n"
+	space: .asciz "): "
+	
+.text
+#inputA
+li a7, 5 #read an int from input console 
+ecall  #call the system
+
+mv t0, a0 #save the value of a0 in t1
+
+#inputB
+li a7, 5 #read an int from input console 
+ecall #call the system
+
+mv t1, a0 #save the value of a0 in t1
+
+#inputC
+li a7, 5 #read an int from input console 
+ecall #call the system
+
+mv t2, a0 #save the value of a0 in t2
+
+#A+B
+add t3, t0, t1 #sum
+
+li a7, 4 #print a string
+la a0, soma #print soma in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, t3 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+
+#A-B
+sub t3, t0, t1 #sub
+
+li a7, 4 #print a string
+la a0, sub #print sub in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, t3 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+
+#A and B
+and t3, t0, t1 #and
+
+li a7, 4 #print a string
+la a0, and #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, t3 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+
+#A or B
+or t3, t0, t1 #and
+
+li a7, 4 #print a string
+la a0, or #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, t3 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+
+#A xor B
+xor t3, t0, t1 #and
+
+li a7, 4 #print a string
+la a0, xor #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, t3 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+
+#A mask B
+li t4, 31 #put the 31 value in 31
+and s2, t2, t4  #realize masks and save the result in s2
+
+li a7, 4 #print a string
+la a0, mask #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, s2 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+
+#Deslocate m bits to the left of A
+sll t3, t0, s2
+
+li a7, 4 #print a string
+la a0, dslli #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, s2 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, space #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, t3 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+
+
+#Deslocate m bits to the left of A
+srl t3, t1, s2
+
+li a7, 4 #print a string
+la a0, dsrli #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, s2 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, space #print and in screen
+ecall #call the system
+
+li, a7, 1 #print an int
+mv a0, t3 #print t3 in screen
+ecall #call the system
+
+li a7, 4 #print a string
+la a0, linedown #print \n in screen
+ecall #call the system
+

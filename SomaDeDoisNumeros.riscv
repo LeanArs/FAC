@@ -1,0 +1,27 @@
+.data
+	linedown: .asciz "\n"
+	
+.text
+#num1
+li a7, 5 #read an int from input console 
+ecall  #call the system
+
+mv t0, a0 #save the value of a0 in t1
+
+#num2
+li a7, 5 #read an int from input console 
+ecall #call the system
+
+mv t1, a0 #save the value of a0 in t1
+
+#sum
+add t2, t0, t1
+
+#prints the result
+li a7, 1 #prints an int
+mv a0, t2 #save the value of t2 in a0
+ecall #call the system
+
+li a7, 4
+la a0, linedown
+ecall

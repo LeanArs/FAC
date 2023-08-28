@@ -1,0 +1,160 @@
+#fa1 = float
+#fa2 = 0.0
+#a2 = 0
+#s0 = sinal
+#t0 = float em int
+
+.data
+	linedown: .asciz "\n"
+	sinalPositivo: .asciz "+\n"
+	sinalNegativo: .asciz "-\n"
+	hex: .asciz "0x00"
+
+.text
+#entrada
+	li a7, 6 #lê um float
+	ecall #chamada de sistema
+	fmv.s fa1, fa0 #armazena float em fa1
+	
+#lê o float
+	li a7, 2 # print float em precisão simples presente em fa0
+	ecall # chamada de sistema
+
+	la a0, linedown #\n
+	li a7, 4 #printa uma string
+	ecall #chamada de sistema
+	
+#converte int para float
+	addi a2, zero, 0 # a2 = 0
+	fcvt.s.w fa2, a2 # fa2 = 0.0
+	
+#verifica se fa1 é menor que 0, que é igual a fa2. Se verdadeiro t1=1, se falso t1=0
+	# fa1 < 0 returns 1 (negativo)
+	# fa1 > 0 returns 0 (positivo)
+	flt.s s0, fa1, fa2
+	
+#imprime o sinal
+	beqz, s0, positivo
+	negativo:
+		li a7, 4
+		la a0, sinalNegativo
+		ecall
+		j exit
+		
+	positivo:
+		li a7, 4
+		la a0, sinalPositivo
+		ecall
+	
+	exit:
+	
+#imprime o expoente
+	fmv.x.s t0, fa1 # converte o float para int (binario em padrão IEEE754 para decimal)
+
+	slli t0, t0, 1 #remove o sinal
+	srli t0, t0, 24 #remove a mantissa
+	addi t0, t0, -127
+	
+	li, a7, 1 #print an int
+	mv a0, t0 #print t0 in screen
+	ecall #call the system
+
+	la a0, linedown #\n
+	li a7, 4 #printa uma string
+	ecall #chamada de sistema
+	
+#print hexa
+	fmv.x.s t1, fa1
+
+	slli s1,t1,9
+	srli s1,s1,9
+	
+	li s2,28
+	li s3,4
+	li s4,8
+	li t6,0	
+	li t1,10
+	
+	li a7,4
+	la a0,hex
+	ecall
+	
+loop:
+	beq s3,s2,end
+	addi s3,s3,4
+	
+	sll s6,s1,s3
+	srli s6,s6,28
+	
+	bge s6,t1,imprimeHex
+	
+	li a7,1
+	mv a0,s6
+	ecall
+	back:
+	
+	j loop
+	
+imprimeHex:
+	slti t2,s6,11 
+	bnez t2,imprimeA
+	slti t2,s6,12 
+	bnez t2,imprimeB
+	slti t2,s6,13 
+	bnez t2,imprimeC
+	slti t2,s6,14 
+	bnez t2,imprimeD
+	slti t2,s6,15 
+	bnez t2,imprimeE
+	slti t2,s6,16 
+	bnez t2,imprimeF
+	
+imprimeA:
+	li t2,65
+	
+	li a7,11
+	mv a0,t2
+	ecall
+	j back
+imprimeB:
+	li t2,66
+	
+	li a7,11
+	mv a0,t2
+	ecall
+	j back
+imprimeC:
+	li t2,67
+	
+	li a7,11
+	mv a0,t2
+	ecall
+	j back
+imprimeD:
+	li t2,68
+	
+	li a7,11
+	mv a0,t2
+	ecall
+	j back
+imprimeE:
+	li t2,69
+	
+	li a7,11
+	mv a0,t2
+	ecall
+	j back
+imprimeF:
+	li t2,70
+	
+	li a7,11
+	mv a0,t2
+	ecall
+	j back
+		
+end:
+	
+	la a0, linedown #\n
+	li a7, 4 #printa uma string
+	ecall #chamada de sistema
+	

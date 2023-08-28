@@ -1,0 +1,35 @@
+#t0 = contador que começa em 0
+
+.data
+linedown: .asciz "\n"
+
+.text
+li a7, 5 #lê quantidade de inteiros
+ecall #chamada de sistema
+mv a1, a0 #move o valor de a0 e guarda em a1
+
+loop1:
+bge t0, a1, done #se valor de t0 < valor de a1 | se não, pula para done
+	li a7, 5 #lê inteiro
+	ecall #chamada de sistema
+	mv t1, a0 #move o valor de a0 para t1
+ 
+	bne t0, zero loop2 # se t0 != 0 vai para loop2, mas se igual então
+		mv t2, t1 #armazena t1 pois é o 1° e o maior valor
+ 
+loop2:
+blt t1, t2 contador # se t2 > t1 entao vai para o contador
+ 	mv t2, t1 #armazena t1 em t2 pois é o maior que o valor já guardado
+
+contador:
+	addi t0, t0, 1 # i = i + 1
+	j loop1 # repeat
+	
+done:
+mv a0, t2 #resgata o valor de t2 em a0
+li a7, 1 #printa um inteiro
+ecall #chamada de sistema
+
+la a0, linedown #\n
+li a7, 4 #printa uma string
+ecall #chamada de sistema

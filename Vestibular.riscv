@@ -1,0 +1,51 @@
+.data
+linedown: .string "\n"
+solucao: .space 256
+resposta: .space 256
+
+.text
+#Lendo quantidade de questões
+li a7, 5 #lê um inteiro
+ecall #chamada de sistema
+mv s0, a0 #move o valor de a0 para s0
+
+addi s0,s0,2
+
+#Armazenando solução da prova
+la a0, solucao
+mv a1, s0
+li a7, 8 #lê uma string
+ecall #chamada de sistema
+mv s1,a0 #move o valor de a0 para s1 | valor digitado solucao
+
+la a0, resposta
+mv a1, s0
+li a7, 8 #lê uma string
+ecall
+mv s2,a0 # move o valor de a0 para s2  | valor digitado resposta
+
+addi s0,s0,-2
+
+while:
+bge t1, s0, done # se contador < s0 entao: 
+ lb s3, (s1) #caracter da palavra
+ lb s4, (s2) #caracter da palavra
+ 
+ bne s3,s4 equal #se s3 = s4 entao:
+  addi s7, s7, 1
+ equal:
+
+ addi s1,s1,1 #avanca para proximo caracter
+ addi s2,s2,1 #avanca para proximo caracte
+ 
+ addi t1,t1,1 #contador + 1
+ j while
+done:
+
+mv a0,s7
+li a7, 1
+ecall
+
+la a0, linedown #quebra de linha
+li a7, 4 #printa uma string
+ecall #chamada de sistema
